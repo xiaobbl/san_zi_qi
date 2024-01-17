@@ -1,4 +1,3 @@
-
 #define _CRT_SECURE_NO_WARNINGS 1
 #include <graphics.h>
 #include "san_zi_qi.h"
