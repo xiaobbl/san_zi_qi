@@ -1,41 +1,57 @@
+#define _CRT_SECURE_NO_WARNINGS 1
 #include <graphics.h>
 #include <math.h>
+#include <thread>
 #include "san_zi_qi.h"
 #include "quan_ju.h"
 
 void draw_an_X(int x,int y,int radius) {//画一个X型
-	double half_length = sqrt(2.0) * (double)radius;
-	line(x - half_length, y - half_length, x + half_length, y + half_length);
-	line(x + half_length, y - half_length, x - half_length, y + half_length);
+	line(x - radius, y - radius, x + radius, y + radius);
+	line(x + radius, y - radius, x - radius, y + radius);
 	return;
 }
 void reset(qi_Ju& qi) {
 	cleardevice();
 	qi.reset();
 	current_Player = CURRENT_X;
-	line(0, 300, WIDTH, 300);
-	line(300, 0, 300, HEIGHT);
-	line(0, 600 + LINE, WIDTH, 600 + LINE);
-	line(600 + LINE, 0, 600 + LINE, HEIGHT);
+	line(0, 300 + TEXT_HEIGHT, WIDTH, 300 + TEXT_HEIGHT);
+	line(300, 0 + TEXT_HEIGHT, 300, HEIGHT + TEXT_HEIGHT);
+	line(0, 600 + LINE + TEXT_HEIGHT, WIDTH, 600 + LINE + TEXT_HEIGHT);
+	line(600 + LINE, 0 + TEXT_HEIGHT, 600 + LINE, HEIGHT + TEXT_HEIGHT);
 	FlushBatchDraw();
 }
 bool handle(qi_Ju& qi) {
 	ExMessage message;
-	getmessage(&message);
+	std::this_thread::sleep_for(std::chrono::milliseconds(5));
+	if (!peekmessage(&message))
+		return true;
 	msg = &message;
 	if (msg->message != WM_LBUTTONUP)
+	{
+		if (msg->message == WM_MOVE)
+			FlushBatchDraw();
 		return true;
+	}
 	int x = msg->x / (300 + LINE);
-	int y = msg->y / (300 + LINE);
-	if (!isspace(qi.get(x, y)))
+	int y = (msg->y - TEXT_HEIGHT) / (300 + LINE);
+	if (msg->y < TEXT_HEIGHT || !isspace(qi.get(x, y)))
 		return true;
 	if (current_Player == CURRENT_X) {
-		draw_an_X(x * (300 + LINE) + 150, y * (300 + LINE) + 150, NORMAL_RADIUS);
+		draw_an_X(x * (300 + LINE) + 150, y * (300 + LINE) + 150 + TEXT_HEIGHT, NORMAL_RADIUS);
 	}
 	else {
-		circle(x * (300 + LINE) + 150, y * (300 + LINE) + 150, NORMAL_RADIUS);
+		circle(x * (300 + LINE) + 150, y * (300 + LINE) + 150 + TEXT_HEIGHT, NORMAL_RADIUS);
 	}
 	qi.set(current_Player, x, y);
 	FlushBatchDraw();
 	return false;
+}
+void printCurrentPlayer() {
+	RECT r = { 0, 0, WIDTH, TEXT_HEIGHT };
+	clearrectangle(0, 0, WIDTH, TEXT_HEIGHT);
+	TCHAR char1[10] = L"玩家";
+	wcscat(char1, current_Player == CURRENT_C ? L"〇" : L"X");
+	wcscat(char1, L"：");
+	drawtext(char1, &r, DT_LEFT);
+	FlushBatchDraw();
 }

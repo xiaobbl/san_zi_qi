@@ -1,4 +1,3 @@
-
 #define _CRT_SECURE_NO_WARNINGS 1
 #include <graphics.h>
 #include "san_zi_qi.h"
@@ -6,10 +5,12 @@
 #include "szq_drawFunc.h"
 
 void initial() {
-	initgraph(WIDTH, HEIGHT);
+	initgraph(WIDTH, HEIGHT);//初始化函数
 	BeginBatchDraw();
 	setlinestyle(PS_SOLID, LINE, nullptr, 0);
 	hnd = GetHWnd();
+	settextstyle(40, 0, _T("宋体"));
+	SetWindowText(hnd, _T("三字棋"));
 }
 int main() {
 	initial();
@@ -19,29 +20,33 @@ int main() {
 		reset(*qi); 
 		while(1)//游戏进行的循环
 		{
-			SetWindowText(hnd, (const WCHAR*)(current_Player == CURRENT_C ? "玩家〇：" : "玩家X"));
-			while (handle(*qi));//获取并处理鼠标信息
+			printCurrentPlayer();
+			while (handle(*qi)) {
+				if (!IsWindow(hnd))
+					return 0;
+			}//获取并处理鼠标信息
 			if (qi->is_Win()) {
-				char info1[20] = "玩家", info2[30] = { 0 };
-				strcat(info1, (current_Player == CURRENT_C) ? "〇" : "X");
-				strcat(info1, "获胜了！");
-				strcpy(info2, info1);
-				strcat(info2, "\n是否重开？");
-				int flag2 = MessageBox(hnd, (const WCHAR*)info2, (const WCHAR*)info1, MB_RETRYCANCEL | MB_ICONINFORMATION);
+				TCHAR info1[20] = TEXT("玩家"), info2[30] = { 0 };
+				wcscat(info1, (current_Player == CURRENT_C) ? L"〇" : L"X");
+				wcscat(info1, L"获胜了！");
+				wcscpy(info2, info1);
+				wcscat(info2, L"\n是否重开？");
+				int flag2 = MessageBox(hnd, info2, info1, MB_RETRYCANCEL | MB_ICONINFORMATION);
 				if(flag2!=IDRETRY)
 					flag = false;
 				break;
 			}
 			else if (qi->isScoreDraw()) {
-				char info1[] = "平局了！";
-				char info2[] = "平局了！\n是否重开？";
-				int flag2 = MessageBox(hnd, (const WCHAR*)info2, (const WCHAR*)info1, MB_RETRYCANCEL | MB_ICONINFORMATION);
+				TCHAR info1[] = TEXT("平局了！");
+				TCHAR info2[] = TEXT("平局了！\n是否重开？");
+				int flag2 = MessageBox(hnd, info2, info1, MB_RETRYCANCEL | MB_ICONINFORMATION);
 				if (flag2 != IDRETRY)
 					flag = false;
 				break;
 			}
 			current_Player = !current_Player;
 		}
-		
 	}
+	EndBatchDraw();
+	return 0;
 }
