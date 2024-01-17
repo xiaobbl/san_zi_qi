@@ -1,6 +1,7 @@
 #pragma comment( linker, "/subsystem:\"windows\" /entry:\"mainCRTStartup\"" )
 #define _CRT_SECURE_NO_WARNINGS 1
 #include <graphics.h>
+#include <thread>
 #include "san_zi_qi.h"
 #include "quan_ju.h"
 #include "szq_drawFunc.h"
@@ -22,9 +23,16 @@ int main() {
 		while (1)//游戏进行的循环
 		{
 			printCurrentPlayer();
-			while (handle(*qi)) {
+			bool flag3 = true;
+			while (flag3) {
+				DWORD start_time = GetTickCount();
+				flag3 = handle(*qi);
 				if (!IsWindow(hnd))
 					return 0;
+				DWORD end_time = GetTickCount();
+				DWORD time = end_time - start_time;
+				if (time < 1000 / REFRESH_RATE)
+					std::this_thread::sleep_for(std::chrono::milliseconds(1000 / REFRESH_RATE - time));
 			}//获取并处理鼠标信息
 			if (qi->is_Win()) {
 				TCHAR info1[20] = TEXT("玩家"), info2[30] = { 0 };

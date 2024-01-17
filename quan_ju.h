@@ -14,6 +14,7 @@
 #define IS_C 0
 #define CURRENT_X false
 #define CURRENT_C true
+#define REFRESH_RATE 144
 extern ExMessage* msg;
 extern bool current_Player;
 extern HWND hnd;

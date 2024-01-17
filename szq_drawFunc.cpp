@@ -1,7 +1,6 @@
 #define _CRT_SECURE_NO_WARNINGS 1
 #include <graphics.h>
 #include <math.h>
-#include <thread>
 #include "san_zi_qi.h"
 #include "quan_ju.h"
 
@@ -22,7 +21,6 @@ void reset(qi_Ju& qi) {
 }
 bool handle(qi_Ju& qi) {
 	ExMessage message;
-	std::this_thread::sleep_for(std::chrono::milliseconds(5));
 	if (!peekmessage(&message))
 		return true;
 	msg = &message;
