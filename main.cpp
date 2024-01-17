@@ -27,10 +27,10 @@ int main() {
 			}//获取并处理鼠标信息
 			if (qi->is_Win()) {
 				TCHAR info1[20] = TEXT("玩家"), info2[30] = { 0 };
-				wcscat(info1, (current_Player == CURRENT_C) ? L"〇" : L"X");
-				wcscat(info1, L"获胜了！");
-				wcscpy(info2, info1);
-				wcscat(info2, L"\n是否重开？");
+				_tcscat(info1, (current_Player == CURRENT_C) ? _T("〇") : _T("X"));
+				_tcscat(info1, _T("获胜了！"));
+				_tcscpy(info2, info1);
+				_tcscat(info2, _T("\n是否重开？"));
 				int flag2 = MessageBox(hnd, info2, info1, MB_RETRYCANCEL | MB_ICONINFORMATION);
 				if(flag2!=IDRETRY)
 					flag = false;
