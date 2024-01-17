@@ -23,16 +23,15 @@ bool handle(qi_Ju& qi) {
 	ExMessage message;
 	if (!peekmessage(&message))
 		return true;
-	msg = &message;
-	if (msg->message != WM_LBUTTONUP)
+	if (message.message != WM_LBUTTONUP)
 	{
-		if (msg->message == WM_MOVE)
+		if (message.message == WM_MOVE)
 			FlushBatchDraw();
 		return true;
 	}
-	int x = msg->x / (300 + LINE);
-	int y = (msg->y - TEXT_HEIGHT) / (300 + LINE);
-	if (msg->y < TEXT_HEIGHT || !isspace(qi.get(x, y)))
+	int x = message.x / (300 + LINE);
+	int y = (message.y - TEXT_HEIGHT) / (300 + LINE);
+	if (message.y < TEXT_HEIGHT || !isspace(qi.get(x, y)))
 		return true;
 	if (current_Player == CURRENT_X) {
 		draw_an_X(x * (300 + LINE) + 150, y * (300 + LINE) + 150 + TEXT_HEIGHT, NORMAL_RADIUS);
