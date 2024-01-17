@@ -3,18 +3,18 @@
 
 class qi_Ju {
 private:
-    char qi_Pan[3][3] = { ' ',' ',' ',' ',' ',' ',' ',' ',' ' };
+    char qi_Pan[3][3];
 public:
     int is_Win() const;
     void set(bool b, int x, int y);
     void reset();
     char get(int x, int y);
-    int overflow(int x, int y);
     qi_Ju();
     bool isScoreDraw();
 };
 qi_Ju::qi_Ju()
 {
+    reset();
 }
 void qi_Ju::set(bool b, int x, int y)
 {
@@ -31,12 +31,6 @@ void qi_Ju::reset() {
 char qi_Ju::get(int x, int y)
 {
     return qi_Pan[x][y];
-}
-int qi_Ju::overflow(int x, int y)
-{
-    if (x > 2 || x < 0 || y > 2 || y < 0)
-        return 1;
-    return 0;
 }
 int qi_Ju::is_Win() const
 {
@@ -55,7 +49,7 @@ int qi_Ju::is_Win() const
 }
 bool qi_Ju::isScoreDraw() {
     for (int i = 0; i < 9; i++) {
-        if (((char*)qi_Pan)[i] == ' ')
+        if (qi_Pan[0][i] == ' ')
             return false;
     }
     return true;

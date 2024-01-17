@@ -7,7 +7,6 @@ public:
     void set(bool b, int x, int y);
     void reset();
     char get(int x, int y);
-    int overflow(int x, int y);
     qi_Ju();
     bool isScoreDraw();
 };
