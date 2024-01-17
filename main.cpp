@@ -18,8 +18,8 @@ int main() {
 	bool flag = true;
 	qi_Ju* qi = new qi_Ju();
 	while (flag) {//重新游戏的循环
-		reset(*qi); 
-		while(1)//游戏进行的循环
+		reset(*qi);
+		while (1)//游戏进行的循环
 		{
 			printCurrentPlayer();
 			while (handle(*qi)) {
@@ -33,8 +33,9 @@ int main() {
 				_tcscpy(info2, info1);
 				_tcscat(info2, _T("\n是否重开？"));
 				int flag2 = MessageBox(hnd, info2, info1, MB_RETRYCANCEL | MB_ICONINFORMATION);
-				if(flag2!=IDRETRY)
+				if (flag2 != IDRETRY)
 					flag = false;
+				flushmessage();
 				break;
 			}
 			else if (qi->isScoreDraw()) {
@@ -44,6 +45,7 @@ int main() {
 				if (flag2 != IDRETRY)
 					flag = false;
 				break;
+				flushmessage();
 			}
 			current_Player = !current_Player;
 		}
