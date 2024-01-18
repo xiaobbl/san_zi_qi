@@ -3,6 +3,7 @@
 #include <math.h>
 #include "san_zi_qi.h"
 #include "quan_ju.h"
+#include "szq_drawFunc.h"
 
 void draw_an_X(int x,int y,int radius) {//»­Ò»¸öXĞÍ
 	line(x - radius, y - radius, x + radius, y + radius);

@@ -6,7 +6,6 @@ public:
     int is_Win() const;
     void set(bool b, int x, int y);
     void reset();
-    char get(int x, int y);
-    qi_Ju();
-    bool isScoreDraw();
+    char get(int x, int y) const;
+    bool isScoreDraw() const;
 };
